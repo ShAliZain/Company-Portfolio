@@ -17,6 +17,10 @@
     <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
     <script src="./js/main.js"></script>
 </head>
 <body>
@@ -38,15 +42,16 @@
     </header>
 
   <section id="home" class="home">
-      <h1>Bring your Business Online</h1>
-      <h2>With Expert IT Solutions</h2>
+      <h1  class="animate__animated animate__backInDown">Bring your Business Online</h1>
+      <h2 class="animate__animated animate__backInLeft">With Expert IT Solutions</h2>
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
     <div class="wave wave3"></div>
   </section>
 
+  <div id="zoom-heading">
   <section id="about" class="about">
-    <h1 class="heading">about us</h1>
+    <h1 class="heading" >about us</h1>
     <div class="row">
         <div class="content">
             <h3>We make creativity work for your brand!</h3>
@@ -59,27 +64,32 @@
         </div>
     </div>
   </section>
+  </div>
 
   <div class="pt-5 pb-5" style="background-color: #f2f2f2;">
     <div class="container">
-      <div class="row">
+      <div class="row" id="web-app">
         <div class="section-head col-sm-12" id="service">
           <h1>Our Services</h1>
           <p>We help you to build high-quality digital solutions and products as well as deliver a wide range of related professional services. We are providing world-class service to our clients.
             </p>
         </div>
-        <div class="col-lg-6 col-sm-9">
-          <div class="item"> <span class="icon feature_box_col_one"><i class="fa fa-laptop"></i></span>
-            <h6>Web App Development</h6>
-            <p>We provide full-stack web development services, Whether It Is Enhancing An Existing App Or Architecting An Enterprise App, Our Developers Are Up For The Challenge.</p>
+       <div class="col-lg-6 col-sm-9">
+          <div class="item">
+            <span id="web-icon" class="icon feature_box_col_one"><i class="fa fa-laptop"></i></span>
+            <h6 id="web-heading">Web App Development</h6>
+            <p id="web-description">We provide full-stack web development services, Whether It Is Enhancing An Existing App Or Architecting An Enterprise App, Our Developers Are Up For The Challenge.</p>
           </div>
         </div>
+
         <div class="col-lg-6 col-sm-9">
-          <div class="item"> <span class="icon feature_box_col_two"><i class="fa fa-android"></i></span>
-            <h6>Mobile App Development</h6>
-            <p>We Have Expertise In Creating Multi-Platform Mobile App Solutions For Both Android And IOS Devices. Using Flutter, And React Native, We Offer Custom Mobile App That Runs Smoothly On Multiple Platforms.</p>
+          <div class="item">
+            <span id="mobile-icon" class="icon feature_box_col_two"><i class="fa fa-android"></i></span>
+            <h6 id="mobile-heading">Mobile App Development</h6>
+            <p id="mobile-description">We Have Expertise In Creating Multi-Platform Mobile App Solutions For Both Android And IOS Devices. Using Flutter, And React Native, We Offer Custom Mobile App That Runs Smoothly On Multiple Platforms.</p>
           </div>
         </div>
+
         <!-- <div class="col-lg-4 col-sm-6">
           <div class="item"> <span class="icon feature_box_col_three"><i class="fa fa-magic"></i></span>
             <h6>Digital Marketing</h6>
@@ -118,7 +128,7 @@
     </div>
 </section>
 
-<div class="pt-5 pb-5">
+<div class="pt-5 pb-5" id="portfolio-data">
     <div class="container">
       <div class="row">
         <div class="section-head-1 col-sm-12" style="text-align: center;">
@@ -301,7 +311,7 @@
 </div>
 
 <div class="communicate">
-    <h3>From idea to execution, we craft scalable digital solutions </h3>
+    <h3 id="footer-heading">From idea to execution, we craft scalable digital solutions </h3>
     <p>that look stunning and perform even better.</p>
     <br>
     <br>
@@ -475,5 +485,87 @@
   </section> -->
 
   <a href="#" class="back-to-top"><i class="ion-ios-arrow-up"></i></a>
+
+<script>
+  $(document).ready(function () {
+    // Define the animation to use for each element
+    const animations = {
+      'web-app': 'animate__fadeIn',
+      'portfolio-data': 'animate__fadeIn',
+      'zoom-heading': 'animate__fadeIn',
+      "footer-heading":"animate__fadeIn",
+      'web-heading':'animate__fadeIn',
+      'web-icon': 'animate__fadeIn',
+      'web-description': 'animate__fadeIn',
+      'mobile-heading':'animate__fadeIn',
+      'mobile-icon': 'animate__fadeIn',
+      'mobile-description': 'animate__fadeIn',
+    };
+
+    Object.keys(animations).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              el.classList.add('animate__animated', animations[id]);
+              observer.unobserve(el); // Remove this if you want repeating animations
+            }
+          });
+        }, { threshold: 0.25 });
+
+        observer.observe(el);
+      }
+    });
+
+    // === Counter Animation ===
+    const counters = document.querySelectorAll('.counter');
+    let counterStarted = false;
+
+  const startCounters = () => {
+  counters.forEach(counter => {
+    const target = +counter.getAttribute('data-target');
+    const duration = 2000; // total animation time in ms
+    let startTimestamp = null;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = timestamp - startTimestamp;
+      let progressCount = Math.min(Math.floor((progress / duration) * target), target);
+      counter.innerText = progressCount;
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step);
+      } else {
+        counter.innerText = target; // ensure exact final value
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  });
+};
+
+
+
+    const counterSection = document.querySelector('.counters');
+    if (counterSection) {
+      const counterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !counterStarted) {
+            startCounters();
+            counterStarted = true;
+            observer.unobserve(counterSection);
+          }
+        });
+      }, { threshold: 0.4 });
+
+      counterObserver.observe(counterSection);
+    }
+  });
+</script>
+
+
+
+
 </body>
 </html>
